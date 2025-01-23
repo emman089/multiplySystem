@@ -194,20 +194,39 @@ export const resetPassword = async (request, response) => {
 };
 export const checkAuth = async (request, response) => {
     try {
-        const user = await User.findById(request.userId)
-        if(!user){
-            return checkMember(user, response),checkMemberTransaction(user1, response), response.status(400).json({
+        // Ensure the request has a valid userId
+        if (!request.userId) {
+            return response.status(401).json({
                 success: false,
-                message: "User not found",
-                
+                message: "Unauthorized: Missing user ID",
             });
         }
-        response.status(200).json({success:true, user:{...user._doc,password:undefined}})
+
+        // Find the user by their ID
+        const user = await User.findById(request.userId);
+
+        if (!user) {
+            return response.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        // Respond with user details excluding the password
+        response.status(200).json({
+            success: true,
+            user: { ...user._doc, password: undefined },
+        });
     } catch (error) {
-        console.log(error)
-        response.status(400).json({success:false,message: error.message}) 
+        console.error("Error in checkAuth:", error.message);
+
+        // Handle errors gracefully
+        response.status(500).json({
+            success: false,
+            message: "Server error: " + error.message,
+        });
     }
-}
+};
 
 export const checkMember = async (user, response) => {
     try {
