@@ -1,6 +1,6 @@
 export const checkMember = async (setMemberData) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/auth/check-member`, {
+      const response = await fetch(`https://multiplysystembackend-xc6o.onrender.com/api/auth/check-member`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

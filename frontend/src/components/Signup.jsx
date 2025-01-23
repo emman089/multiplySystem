@@ -32,7 +32,7 @@ const Signup = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://multiplysystembackend.onrender.com/api/auth/signup", {
+      const response = await fetch("https://multiplysystembackend-xc6o.onrender.com/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

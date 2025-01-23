@@ -13,7 +13,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use(cors({
-    origin: "http://localhost:5174", // Your frontend URL (adjust if different)
+    origin: "https://multiplysystem.onrender.com", // Your frontend URL (adjust if different)
     credentials: true,  // Allow cookies
 }));
 
