@@ -3,8 +3,7 @@ import { User } from "../models/user.js";
 import { generateJWTToken } from "../utils/generateJWTToken.js";
 
 export const login = async (request, response) => {
-    const { email, password, userId } = request.body;
-console.log("Received User ID:", userId); // Added console.log for userId
+
 
     try {
         // Check if user exists
