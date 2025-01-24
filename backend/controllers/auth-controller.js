@@ -90,7 +90,7 @@ export const login = async (request, response) => {
         }
 
         // Generate JWT token
-         generateJWTToken(response, user._id)
+         generateJWTToken(response, userId)
         response.status(200).json({
             success:true,
             message: "Login Successful",
