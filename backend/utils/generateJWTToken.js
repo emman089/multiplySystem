@@ -18,7 +18,8 @@ export const generateJWTToken = (response, userId) => {
             sameSite: 'strict',
             maxAge: 24 * 60 * 60 * 1000
         });
-
+    const { email, password, userId } = request.body;
+console.log("Received User ID:", userId); // Added console.log for userId
         return token;
     } catch (error) {
         console.error('Error generating JWT token:', error);
