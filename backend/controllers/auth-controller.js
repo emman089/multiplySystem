@@ -27,7 +27,7 @@ console.log("Received User ID:", userId); // Added console.log for userId
         }
 
         // Generate JWT token and set it in the response
-        generateJWTToken(response, userId);
+        generateJWTToken(response, user.id);
 
         response.status(200).json({
             success: true,
