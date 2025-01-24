@@ -9,8 +9,8 @@ router.post('/logout', logout)
 router.post('/verify-email', verifyEmail)
 router.post('/forgot-password', forgotPassword)
 router.post('/reset-password/:token', resetPassword)
-router.post('/check-auth', verifyToken, checkAuth)
-router.post('/check-member', checkMember)
-router.post('/check-transaction', verifyToken, checkMemberTransaction)
+router.get('/check-auth', verifyToken, checkAuth)
+router.get('/check-member', checkMember)
+router.get('/check-transaction', verifyToken, checkMemberTransaction)
 
 export default router;
