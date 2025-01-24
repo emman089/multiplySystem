@@ -1,28 +1,22 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-dotenv.config();
+import { generateJWTToken } from './utils/generateJWTToken.js';  // Ensure this path is correct
 
-export const generateJWTToken = (response, userId) => {
-    if (!process.env.JWT_KEY) {
-        throw new Error('JWT_SECRET is not defined');
+app.post('/login', (req, res) => {
+    const { userId } = req.body;  // Destructure userId from the body
+    
+    console.log("Received User ID:", userId);  // Check if userId is being passed correctly
+
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
     }
 
     try {
-        const token = jwt.sign({ userId }, process.env.JWT_KEY, {
-            expiresIn: '1d'
+        const token = generateJWTToken(res, userId);  // Pass userId to the function
+        res.json({
+            message: 'Token generated successfully',
+            userId
         });
-
-        response.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000
-        });
-    const { email, password, userId } = request.body;
-console.log("Received User ID:", userId); // Added console.log for userId
-        return token;
     } catch (error) {
-        console.error('Error generating JWT token:', error);
-        throw new Error('Failed to generate token');
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'Failed to generate token' });
     }
-};
+});
