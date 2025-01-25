@@ -15,7 +15,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch("https://multiplysystembackend-xc6o.onrender.com/api/auth/login", {
+      const response = await fetch("http://localhost:3001/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,6 +28,7 @@ const Login = () => {
 
       if (response.ok) {
         // Verify the cookie is set
+        document.location.href = "./";
         const cookies = document.cookie;
       } else {
         setError(data.message || "Login failed. Please try again.");
