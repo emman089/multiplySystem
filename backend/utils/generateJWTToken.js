@@ -1,29 +1,15 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-dotenv.config();
-
 export const generateJWTToken = (response, userId) => {
-    if (!process.env.JWT_KEY) {
-        throw new Error('JWT_SECRET is not defined');
-    }
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: '1d'
+    });
 
-    console.log("Received User ID:", userId); // Added console.log for userId
-
-    try {
-        const token = jwt.sign({ userId }, process.env.JWT_KEY, {
-            expiresIn: '1d'
-        });
-
-        response.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000
-        });
-
-        return token;
-    } catch (error) {
-        console.error('Error generating JWT token:', error);
-        throw new Error('Failed to generate token');
-    }
+    response.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Use secure in production
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        domain: process.env.NODE_ENV === 'production' 
+            ? 'multiplysystem.onrender.com'  // Adjust to your actual domain
+            : 'localhost',
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+    });
 };
