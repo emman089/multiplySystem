@@ -28,7 +28,6 @@ const Login = () => {
 
       if (response.ok) {
         // Verify the cookie is set
-        document.location.href = "./";
         const cookies = document.cookie;
       } else {
         setError(data.message || "Login failed. Please try again.");
