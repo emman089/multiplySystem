@@ -13,7 +13,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use(cors({
-    origin: "https://multiplysystem.onrender.com", // Your frontend URL (adjust if different)
+    origin: "https://multiply-system-qerccrazk-emman089s-projects.vercel.app", // Your frontend URL (adjust if different)
     credentials: true,  // Allow cookies
 }));
 
