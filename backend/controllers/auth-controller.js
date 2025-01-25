@@ -195,39 +195,46 @@ export const resetPassword = async (request, response) => {
     }
 };
 
-// Function to check authentication
 export const checkAuth = async (request, response) => {
     try {
-        // Get the token from the cookies
         const token = request.cookies.token;
+        
         if (!token) {
+            console.error('No authentication token found');
             return response.status(401).json({
                 success: false,
-                message: 'Authentication token is missing.',
+                message: 'No authentication token. Please log in.',
             });
         }
 
-        // Decode and verify the token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const user = await User.findById(decoded.userId);
 
-        // Find the user by ID
-        const user = await User.findById(decoded.userId);
-        if (!user) {
-            return response.status(404).json({
+            if (!user) {
+                console.error('User not found for token');
+                return response.status(404).json({
+                    success: false,
+                    message: 'User associated with token not found.',
+                });
+            }
+
+            response.status(200).json({
+                success: true,
+                user: { ...user._doc, password: undefined },
+            });
+        } catch (verificationError) {
+            console.error('Token verification failed:', verificationError.message);
+            return response.status(401).json({
                 success: false,
-                message: 'User not found.',
+                message: 'Invalid or expired token. Please log in again.',
             });
         }
-
-        response.status(200).json({
-            success: true,
-            user: { ...user._doc, password: undefined }, // Exclude the password field
-        });
     } catch (error) {
-        console.error('Error in checkAuth:', error);
-        response.status(400).json({
+        console.error('Unexpected error in checkAuth:', error);
+        response.status(500).json({
             success: false,
-            message: 'Invalid or expired token.',
+            message: 'Internal server error during authentication.',
         });
     }
 };
